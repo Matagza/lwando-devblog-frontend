@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'https://lwando-devblog-backend.onrender.com'; // Set your backend API base URL here
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
