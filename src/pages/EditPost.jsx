@@ -76,8 +76,12 @@ const EditPost = () => {
     if (image) data.append('image', image);
 
     try {
+      const token = localStorage.getItem('token');
       await axios.put(`/api/posts/${id}`, data, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
       });
       navigate(`/post/${id}`);
     } catch (err) {

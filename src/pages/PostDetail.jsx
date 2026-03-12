@@ -37,7 +37,12 @@ const PostDetail = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
       try {
-        await axios.delete(`/api/posts/${id}`);
+        const token = localStorage.getItem('token');
+        await axios.delete(`/api/posts/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         navigate('/');
       } catch (err) {
         alert('Failed to delete the post. Please try again.');

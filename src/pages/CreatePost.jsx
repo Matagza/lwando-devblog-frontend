@@ -46,8 +46,12 @@ const CreatePost = () => {
     data.append('image', image);
 
     try {
+      const token = localStorage.getItem('token');
       await axios.post('/api/posts', data, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
       });
       navigate('/');
     } catch (err) {
