@@ -27,10 +27,6 @@ const PostDetail = () => {
 
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/1200x600/4287f5/ffffff?text=Insights';
-    if (url.startsWith('http://localhost:5000')) {
-      const proxyDomain = window.location.origin.replace('5173', '5000');
-      return url.replace('http://localhost:5000', proxyDomain);
-    }
     return url;
   };
 
