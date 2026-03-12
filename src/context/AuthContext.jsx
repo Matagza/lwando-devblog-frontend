@@ -12,8 +12,16 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    
-    if (storedUser && token) {
+    const tokenVersion = localStorage.getItem('tokenVersion');
+    const CURRENT_VERSION = 'v2'; // Increment this to force logout and clear stale tokens
+
+    if (tokenVersion !== CURRENT_VERSION) {
+      console.log('AuthContext: Stale token version detected, clearing localStorage');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.setItem('tokenVersion', CURRENT_VERSION);
+      setUser(null);
+    } else if (storedUser && token) {
       setUser(JSON.parse(storedUser));
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       console.log('AuthContext: Token loaded from localStorage');
@@ -28,6 +36,7 @@ export const AuthProvider = ({ children }) => {
       
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('tokenVersion', 'v2');
       
       // Explicitly set the header for all subsequent requests
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -47,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('tokenVersion', 'v2');
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setUser(userData);
     return response.data;
